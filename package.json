@@ -1,0 +1,22 @@
+{
+  "name": "arctis-battery-app",
+  "productName": "Arctis Battery",
+  "version": "0.1",
+  "preferGlobal": false,
+  "description": "Shows SteelSeries Arctis wireless device's battery percentages as a tray icon.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --platform=win32 --arch=x64 --overwrite --out ./builds --icon ./icons/app.ico"
+  },
+  "author": "Craig Wheatley",
+  "license": "MIT",
+  "dependencies": {
+    "arctis-usb-finder": "0.0.5"
+  },
+  "devDependencies": {
+    "electron": "^12.0.0",
+    "electron-packager": "^15.2.0",
+    "node-hid": "^1.2.0"
+  }
+}

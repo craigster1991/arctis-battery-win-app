@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steel Series Arctis Headset</title>
+  <style>
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+      border-radius: 3px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 30px;
+      font-size: 17px;
+      bottom: 0;
+      opacity: 0;
+      transition: all 0.5s;
+    }
+    #toast.show {
+      visibility: visible;
+      bottom: 30px;
+      opacity: 1;
+    }
+
+    table {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="data"></h1>
+  <div id="toast">refresh...</div>
+  <script>
+    function showToast() {
+      const toast = document.getElementById("toast")
+      toast.classList.toggle("show")
+      setTimeout(() => toast.classList.toggle("show"), 500)
+    }
+    
+    function processData(headphoneData) {
+      showToast()
+      document.getElementById("data").innerHTML = `${headphoneData.modelName}: ${headphoneData.batteryPercent}%`
+    }
+
+    window.api.receive("send-battery", hd => processData(hd))
+    setInterval(() => {
+      window.api.send("get-battery")
+    }, 2000)
+    window.api.send("get-battery")
+</script>
+</body>
+</html>

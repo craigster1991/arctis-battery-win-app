@@ -1,7 +1,7 @@
 {
   "name": "arctis-battery-app",
   "productName": "Arctis Battery",
-  "version": "0.1",
+  "version": "0.1.1",
   "preferGlobal": false,
   "description": "Shows SteelSeries Arctis wireless device's battery percentages as a tray icon.",
   "main": "main.js",

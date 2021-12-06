@@ -7,7 +7,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --platform=win32 --arch=x64 --overwrite --out ./builds --icon ./icons/app.ico"
+    "build": "electron-packager . --platform=win32 --arch=x64 --overwrite --out ./builds --icon ./icons/app.ico",
+    "build:osx": "electron-packager . --platform=darwin --arch=x64 --overwrite --out ./builds --icon ./icons/app.icns"
   },
   "author": "Craig Wheatley",
   "license": "MIT",

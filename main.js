@@ -26,7 +26,6 @@ async function init() {
       preload: path.join(__dirname, "preload.js")
     }
   })
-  win.webContents.openDevTools()
   win.hide()
   win.setMenu(null)
   win.loadFile(path.join(__dirname, "index.html"))

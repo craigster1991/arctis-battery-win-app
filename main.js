@@ -26,7 +26,8 @@ async function init() {
       preload: path.join(__dirname, "preload.js")
     }
   })
-  win.hide()
+  win.webContents.openDevTools()
+  // win.hide()
   win.setMenu(null)
   win.loadFile(path.join(__dirname, "index.html"))
   win.on('minimize', e => {
@@ -36,9 +37,16 @@ async function init() {
 
   ipcMain.on("get-battery", () => {
     let headphonesData = {}
-    try { headphonesData = getHeadphones()[0] } // only want first headphone found
-    catch (e) { return }
-    if (!headphonesData.batteryPercent) {
+    try {
+      const hd = getHeadphones()
+      const err = "no device detected."
+      headphonesData = (hd.length > 0 ? JSON.stringify(hd) : err) || err
+    }
+    catch (e) { 
+      headphonesData = JSON.stringify(`there was an error: ${e}`)
+      return
+    }
+    if (!headphonesData?.batteryPercent) {
       tray.setImage(path.join(__dirname, `icons/disconnect.png`))
     }
     else {

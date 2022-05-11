@@ -6,11 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Steel Series Arctis Headset</title>
   <style>
+    body {
+      background-color: #333;
+      color: #fff;
+    }
     #toast {
       visibility: hidden;
       min-width: 250px;
-      background-color: #333;
-      color: #fff;
+      color: #333;
+      background-color: #fff;
       text-align: center;
       font-family: Arial, Helvetica, sans-serif;
       border-radius: 3px;
@@ -32,12 +36,18 @@
     }
 
     table {
+      color: #fff;
       text-align: center;
+    }
+    pre {
+      color: #fff;
+      font-size: 16px;
+      white-space: break-spaces;
     }
   </style>
 </head>
 <body>
-  <h1 id="data"></h1>
+  <pre id="data">waiting for device...</pre>
   <div id="toast">refresh...</div>
   <script>
     function showToast() {
@@ -47,8 +57,9 @@
     }
     
     function processData(headphoneData) {
+      console.log(headphoneData);
       showToast()
-      document.getElementById("data").innerHTML = `${headphoneData.modelName}: ${headphoneData.batteryPercent}%`
+      document.getElementById("data").innerHTML = headphoneData
     }
 
     window.api.receive("send-battery", hd => processData(hd))

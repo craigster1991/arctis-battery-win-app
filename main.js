@@ -45,7 +45,7 @@ async function init() {
       // math.min stops any values over 100
       tray.setImage(path.join(__dirname, `icons/${Math.min(headphonesData.batteryPercent, 100)}.png`))
     }
-    win.webContents.send("send-battery", headphonesData)
+    win.webContents.send("send-battery", JSON.stringify(headphonesData))
   })
 }
 

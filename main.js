@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, Menu, Tray } = require("electron")
 const path = require("path")
-const getHeadphones = require('arctis-usb-finder').default
+const { getMatchedBatteryLevels, getUnmatchedDevices } = require('./api/device');
 
 let win, tray
 async function init() {
@@ -11,8 +11,8 @@ async function init() {
       app.quit()
     }},
   ])
-  tray = new Tray(path.join(__dirname, "icons/disconnect.png"))
-  tray.setToolTip('Arctis Headset Battery.')
+  tray = new Tray(path.join(__dirname, "icons", "disconnect.png"))
+  tray.setToolTip('SteelSeries devices battery.')
   tray.setContextMenu(contextMenu)
 
   win = new BrowserWindow({
@@ -23,29 +23,42 @@ async function init() {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
-      preload: path.join(__dirname, "preload.js")
+      preload: path.join(__dirname, "api", "preload.js"),
+      devTools: true
     }
   })
-  win.hide()
+  // win.hide()
   win.setMenu(null)
-  win.loadFile(path.join(__dirname, "index.html"))
+  win.loadFile(path.join(__dirname, "view", "index.html"))
+  // win.webContents.openDevTools()
   win.on('minimize', e => {
     e.preventDefault()
     win.hide()
   })
 
+  ipcMain.on("get-devices", () => {
+    console.log('get-devices!')
+    const devices = getUnmatchedDevices()
+    win.webContents.send("get-devices", JSON.stringify(devices))
+  })
+
   ipcMain.on("get-battery", () => {
-    let headphonesData = {}
-    try { headphonesData = getHeadphones()[0] } // only want first headphone found
-    catch (e) { return }
-    if (!headphonesData.batteryPercent) {
+    let devicesData = {}
+    try {
+      devicesData = getMatchedBatteryLevels()
+    }
+    catch (e) {
+      console.log(e);
+      devicesData = e
+    }
+    if (!devicesData[0]?.battery) {
       tray.setImage(path.join(__dirname, `icons/disconnect.png`))
     }
     else {
-      // math.min stops any values over 100
-      tray.setImage(path.join(__dirname, `icons/${Math.min(headphonesData.batteryPercent, 100)}.png`))
+      //math.min stops any values over 100
+      tray.setImage(path.join(__dirname, `icons/${Math.min(devicesData[0]?.battery, 100)}.png`))
     }
-    win.webContents.send("send-battery", JSON.stringify(headphonesData))
+    win.webContents.send("send-battery", JSON.stringify(devicesData))
   })
 }
 

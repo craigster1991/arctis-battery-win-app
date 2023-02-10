@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SteelSeries devices battery</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="./jquery-3.6.3.slim.min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Device name</th>
+          <th>Device status</th>
+          <th>Battery level</th>
+          <th>Showing in tray?</th>
+        </tr>
+      </thead>
+      <tbody id="devices">
+      </tbody>
+    </table>
+  </div>
+  <div id="new-device" class="cta-container">
+    <button>Don't see your device?</button>
+  </div>
+  <p id="copyright">MIT License - Copyright (c) 2023 Craig Wheatley</p>
+
+  <div id="popup">
+    <div class="close">X</div>
+    <p class="content"></p>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

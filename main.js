@@ -45,6 +45,7 @@ async function init() {
       const { vendorId, productId, product, ...rest } = d.attDevice
       return { vendorId, productId, product }
     })
+    .sort((a, b) => a.productId - b.productId)
     .filter((device => {
       if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
         return false

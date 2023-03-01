@@ -26,11 +26,41 @@
   <div id="new-device" class="cta-container">
     <button>Don't see your device?</button>
   </div>
-  <p id="copyright">MIT License - Copyright (c) 2023 Craig Wheatley</p>
+  <p id="about">About</p>
 
-  <div id="popup">
+  <div class="popup" id="device-popup">
     <div class="close">X</div>
-    <p class="content"></p>
+    <div class="content">
+      <h3>You should see other Steel Series devices here</h3>
+      <p>Send the name, vendor id and product id to me and I'll try support it!</p>
+      <p>Also send me the model name and year of your product!</p>
+      <br>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Device name</th>
+          <th>VendorId</th>
+          <th>ProductId</th>
+        </tr>
+      </thead>
+      <tbody id="new-devices">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup" id="about-popup">
+    <div class="close">X</div>
+    <div class="content">
+      <h3>What does this app do?</h3>
+      <p>This application is designed to show you the current battery level of your SteelSeries devices. It currently only supports one device at a time. (for now!)</p>
+      <p>The battery level will show in the Windows taskbar as a number.</p>
+      <hr>
+      <p>MIT License - Copyright (c) 2023 Craig Wheatley</p>
+      <p>
+        This is inspired by the amazing work by atagulalan. His work can be found here: https://github.com/atagulalan/arctis-battery-percentage
+      </p>
+    </div>
   </div>
 
   <script src="./script.js"></script>

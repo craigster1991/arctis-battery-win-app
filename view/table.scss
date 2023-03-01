@@ -5,7 +5,9 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	text-align: center;
+	overflow: scroll;
 	tbody {
+		max-height: 500px;
 		td {
 			font-size: 14px;
 			color: #E6E6E6;
@@ -30,7 +32,7 @@ table {
 		}
 	}
 	tfoot {
-		font-size: 14px;
+		font-size: 10px;
 		font-weight: bold;
 		color: #E6E6E6;
 		background: #000000;
@@ -38,9 +40,6 @@ table {
 		background: -webkit-linear-gradient(top, #404040 0%, #191919 66%, #000000 100%);
 		background: linear-gradient(to bottom, #404040 0%, #191919 66%, #000000 100%);
 		border-top: 1px solid #4A4A4A;
-		td {
-			font-size: 14px;
-		}
 	}
 }
 table td, table th {

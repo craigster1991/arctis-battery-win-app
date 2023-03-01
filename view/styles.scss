@@ -40,15 +40,17 @@ body {
   }
 }
 
-#copyright {
+#about {
   position: absolute;
   right: 16px;
   bottom: 16px;
   color: white;
   font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-#popup {
+.popup {
   display: none;
   position: fixed;
   width: 95vw;
@@ -58,12 +60,35 @@ body {
   background: #363636;
   border-radius: 20px;
   padding: 32px;
+  box-shadow: 0 0 10px 5px #000000;
   &.show {
     display: block;
   }
   .content {
-    color: white;
-    font-size: 11px;
+    p, h3 {
+      color: white;
+    }
+    hr {
+      display: block;
+      height: 1px;
+      border: 0;
+      border-top: 1px solid white;
+    }
+  }
+  .content {
+    p {
+      font-size: 11px;
+    }
+  }
+  &#about-popup {
+    .content {
+      p, h3, hr {
+        margin-bottom: 16px;
+      }
+      p {
+        font-size: 16px;
+      }
+    }
   }
   .close {
     position: absolute;

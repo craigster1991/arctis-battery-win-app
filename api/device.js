@@ -6,7 +6,7 @@ HID_setDriverType('libusb')
 
 const getUnmatchedDevices = (overrideMatches = null) => {
   const devices = []
-  const stringMatches = (
+  const stringMatches = overrideMatches === "_ALL_" ? "_ALL_" : (
     typeof overrideMatches === 'string' ? [overrideMatches?.toLowerCase()] : overrideMatches?.toLowerCase()
   ) || [
     "steelseries",
@@ -17,17 +17,14 @@ const getUnmatchedDevices = (overrideMatches = null) => {
     const attachedDevices = HID_devices()
     for (const attDevice of attachedDevices) {
       try {
-        if (stringMatches?.some(s => attDevice?.product?.toLowerCase().includes(s) || attDevice?.manufacturer?.toLowerCase().includes(s))) {
+        if (stringMatches === "_ALL_") {
           if (attDevice?.usage !== 1) {
-            devices.push({
-              attDevice
-              // product: attDevice.product,
-              // productId: attDevice.productId,
-              // vendorId: attDevice.vendorId,
-              // manufacturer: attDevice.manufacturer,
-              // release: attDevice.release,
-              // usage: attDevice.usage,
-            })
+            devices.push({ attDevice })
+          }
+        }
+        else if (stringMatches?.some(s => attDevice?.product?.toLowerCase().includes(s) || attDevice?.manufacturer?.toLowerCase().includes(s))) {
+          if (attDevice?.usage !== 1) {
+            devices.push({ attDevice })
           }
         }
       }

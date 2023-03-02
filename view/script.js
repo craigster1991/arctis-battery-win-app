@@ -1,28 +1,33 @@
 const processData = (data, tableId) => {
-  const parsedData = JSON.parse(data)
   $(`#${tableId} .device`).remove()
-  parsedData.forEach((deviceData, index) => {
-    const html = 
-    tableId === "devices" ? $(`
+  if (!data.length) {
+    const html = $(`
       <tr class="device">
-        <td>${deviceData?.device}</td>
-        <td>${deviceData?.error ? "❌" : "✅"}</td>
-        <td>${deviceData?.battery+"%" || "❌"}</td>
-        <td>${index === 0 ? "✅" : "❌"}</td>
+        <td>No devices detected</td>
       </tr>
-    `) : $(`
-    <tr class="device">
-      <td>${deviceData?.product}</td>
-      <td>${deviceData?.vendorId}</td>
-      <td>${deviceData?.productId}</td>
-    </tr>
-  `)
+    `)
     $(`#${tableId}`).append(html)
-  })
-  // check for device errors!!
-  // showToast()
-  // $("#data").innerHTML = `${data.modelName}: ${data.batteryPercent}%`
-  // $("#data").innerHTML = data
+  }
+  else {
+    data.forEach((deviceData, index) => {
+      const html = 
+      tableId === "devices" ? $(`
+        <tr class="device">
+          <td>${deviceData?.device}</td>
+          <td>${deviceData?.error ? "❌" : "✅"}</td>
+          <td>${deviceData?.battery+"%" || "❌"}</td>
+          <td>${index === 0 ? "✅" : "❌"}</td>
+        </tr>
+      `) : $(`
+      <tr class="device">
+        <td>${deviceData?.product}</td>
+        <td>${deviceData?.vendorId}</td>
+        <td>${deviceData?.productId}</td>
+      </tr>
+    `)
+      $(`#${tableId}`).append(html)
+    })
+  }
 }
 
 const toggleDevicePopup = () => $("#device-popup").toggleClass("show")
@@ -39,8 +44,16 @@ $(document).ready(() => {
   $("#about-popup .close").on("click", toggleAboutPopup)
   $("#about").on("click", toggleAboutPopup)
 
-  window.api.receive("send-battery", data => processData(data, "devices"))
-  window.api.receive("get-devices", newDevices => showNewDevices(newDevices))
+  window.api.receive("send-battery", data => {
+    const {error, devicesData} = JSON.parse(data)
+    if (error) console.log("receive send-battery error", error)
+    processData(devicesData, "devices")
+  })
+  window.api.receive("get-devices", (d) => {
+    const { error, cleanDevices } = JSON.parse(d)
+    if (error) return alert('error getting list of devices: '+JSON.stringify(error))
+    showNewDevices(cleanDevices)
+  })
 
   setInterval(() => {
     window.api.send("get-battery")
@@ -48,7 +61,6 @@ $(document).ready(() => {
   window.api.send("get-battery")
 
   $("#new-device").on("click", e => {
-    console.log("get new devices")
     window.api.send("get-devices")
   })
 })

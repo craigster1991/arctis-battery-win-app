@@ -16,7 +16,7 @@ async function init() {
   tray.setContextMenu(contextMenu)
 
   win = new BrowserWindow({
-    width: 800,
+    width: 1024,
     height: 800,
     maximizable: false,
     webPreferences: {
@@ -30,7 +30,7 @@ async function init() {
   // win.hide()
   win.setMenu(null)
   win.loadFile(path.join(__dirname, "view", "index.html"))
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
   win.on("minimize", e => {
     e.preventDefault()
     win.hide()
@@ -38,41 +38,54 @@ async function init() {
 
   ipcMain.on("get-devices", () => {
     console.log("get-devices!")
-    const rawDevices = getUnmatchedDevices()
-    let temp = {}
-    const cleanDevices = rawDevices
-    .map(d => {
-      const { vendorId, productId, product, ...rest } = d.attDevice
-      return { vendorId, productId, product }
-    })
-    .sort((a, b) => a.productId - b.productId)
-    .filter((device => {
-      if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
-        return false
-      }
-      temp = device
-      return true
-    }))
-    win.webContents.send("get-devices", JSON.stringify(cleanDevices))
+    try {
+      const rawDevices = getUnmatchedDevices()
+      let temp = {}
+      const cleanDevices = rawDevices
+      .map(d => {
+        const { vendorId, productId, product, ...rest } = d.attDevice
+        return { vendorId, productId, product }
+      })
+      .sort((a, b) => a.productId - b.productId)
+      .filter((device => {
+        if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
+          return false
+        }
+        temp = device
+        return true
+      }))
+      win.webContents.send("get-devices", JSON.stringify({ error: null, cleanDevices }))
+    }
+    catch (e) {
+      console.log(e)
+      win.webContents.send("get-devices", JSON.stringify({ error: e, cleanDevices:[] }))
+    }
   })
 
   ipcMain.on("get-battery", () => {
-    let devicesData = {}
+    let devicesData = []
+    let deviceError = null
     try {
-      devicesData = getMatchedBatteryLevels()
+      const { error, devices } = getMatchedBatteryLevels()
+      deviceError = error
+      devicesData = devices
+
+      if (devicesData.length) {
+        if (!devicesData[0]?.battery) {
+          tray.setImage(path.join(__dirname, `icons/disconnect.png`))
+        }
+        else {
+          tray.setImage(path.join(__dirname, `icons/${Math.min(devicesData[0]?.battery, 100)}.png`))
+        }
+      }
+
+      win.webContents.send("send-battery", JSON.stringify({ error: deviceError, devicesData }))
     }
     catch (e) {
       console.log(e);
-      devicesData = e
+      win.webContents.send("send-battery", JSON.stringify({ error: {e,deviceError}, devicesData }))
     }
-    if (!devicesData[0]?.battery) {
-      tray.setImage(path.join(__dirname, `icons/disconnect.png`))
-    }
-    else {
-      //math.min stops any values over 100
-      tray.setImage(path.join(__dirname, `icons/${Math.min(devicesData[0]?.battery, 100)}.png`))
-    }
-    win.webContents.send("send-battery", JSON.stringify(devicesData))
+    
   })
 }
 

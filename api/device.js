@@ -57,7 +57,9 @@ const getMatchedDevices = () => {
           const match = knownDevice?.vendorId === attDevice?.vendorId
           && knownDevice?.productId === attDevice?.productId
           && attDevice?.usage !== 1
-          if (match) kd = knownDevice
+          if (match) {
+            kd = knownDevice
+          }
           return match
         }
   
@@ -67,51 +69,63 @@ const getMatchedDevices = () => {
         }
       })
   
-      if (haveDevice) { devices.push({...attDevice, ...kd}) }
+      if (haveDevice) {
+        devices.push({...attDevice, ...kd})
+      }
     }
+
+    return {error: null, devices}
   }
   catch(e) {
     console.log('get hid devices error', e)
-    return
+    return {error: {e, s:"get hid devices error"}, devices}
   }
-
-  return devices
 }
 
 const getDevicesBattery = (devices) => {
   const parsedDevices = []
-  
-  devices.forEach(d => {
-    const device = new HID(d.path)
-    if (!device) return
 
+  if (devices?.length) {
     try {
-      
-      device.write([0x06, 0x18])
-      const deviceInfo = {
-        device: d.name || d.product,
-        battery: device.readSync()[2]
-      }
-
-      parsedDevices.push(deviceInfo)
-
-    } catch (e) {
-      console.log('connect to device fail', e)
-      parsedDevices.push({
-        device: deviceData.name,
-        error: true
-      })
+      devices.forEach(d => {
+        const device = new HID(d.path)
+        if (!device) return
+    
+        try {
+          
+          device.write([0x06, 0x18])
+          const deviceInfo = {
+            device: d.name || d.product,
+            battery: device.readSync()[2]
+          }
+    
+          parsedDevices.push(deviceInfo)
+    
+        } catch (e) {
+          console.log('connect to device fail', e)
+          parsedDevices.push({
+            device: deviceData.name,
+            error: true
+          })
+        }
+    
+        device.close()
+      });
     }
-
-    device.close()
-  });
+  
+    catch(e) {
+      console.log('error getting device battery')
+      return []
+    }
+  }
   
   return parsedDevices
 }
 
 const getMatchedBatteryLevels = () => {
-  const devices = getMatchedDevices()
-  return getDevicesBattery(devices)
+  const {error, devices} = getMatchedDevices()
+  return { error, devices: getDevicesBattery(devices) }
+  // return {error, devices}
 }
 
 module.exports = {

@@ -1,24 +1,33 @@
 {
-  "name": "arctis-battery-app",
-  "productName": "Arctis Battery",
+  "name": "steel-series-battery",
+  "productName": "steel-series-battery",
   "version": "0.2.0",
-  "preferGlobal": false,
   "description": "Shows SteelSeries Arctis wireless device's battery percentages as a tray icon.",
-  "main": "main.js",
+  "main": "src/index.js",
   "scripts": {
-    "compile": "node-sass view/styles.scss > view/styles.css",
-    "start": "npm run compile && electron .",
-    "build": "npm run compile && electron-packager . --platform=win32 --arch=x64 --overwrite --out ./builds --icon ./icons/app.ico",
-    "build:osx": "npm run compile && electron-packager . --platform=darwin --arch=x64 --overwrite --out ./builds --icon ./icons/app.icns"
+    "start": "npm run compile && electron-forge start",
+    "compile": "node-sass src/styles/styles.scss > src/styles.css",
+    "package": "npm run compile && electron-forge package",
+    "make": "npm run compile && electron-forge make",
+    "publish": "npm run compile && electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
-  "author": "Craig Wheatley",
+  "keywords": [],
+  "author": {
+    "name": "Craig Wheatley",
+    "website": "https://wheatleylabs.co.uk"
+  },
   "license": "MIT",
-  "devDependencies": {
-    "electron": "^12.0.0",
-    "electron-packager": "^15.2.0",
-    "node-sass": "^8.0.0"
-  },
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
     "node-hid": "^2.1.2"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.5",
+    "@electron-forge/maker-deb": "^6.0.5",
+    "@electron-forge/maker-rpm": "^6.0.5",
+    "@electron-forge/maker-squirrel": "^6.0.5",
+    "@electron-forge/maker-zip": "^6.0.5",
+    "electron": "23.1.1"
   }
 }

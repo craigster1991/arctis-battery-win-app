@@ -66,8 +66,11 @@ body {
     display: block;
   }
   .content {
-    p, h3 {
+    p, a, h3 {
       color: white;
+    }
+    p {
+      font-size: 11px;
     }
     hr {
       display: block;
@@ -76,18 +79,19 @@ body {
       border-top: 1px solid white;
     }
   }
-  .content {
-    p {
-      font-size: 11px;
-    }
-  }
   &#about-popup {
     .content {
       p, h3, hr {
         margin-bottom: 16px;
       }
-      p {
+      p, a {
         font-size: 16px;
+      }
+      a {
+        text-decoration: underline;
+        &:hover {
+          color: rgb(58, 180, 255);
+        }
       }
     }
   }

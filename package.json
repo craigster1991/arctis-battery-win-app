@@ -9,7 +9,7 @@
     "compile": "node-sass src/styles/styles.scss > src/styles.css",
     "package": "npm run compile && electron-forge package",
     "make": "npm run compile && electron-forge make",
-    "publish": "npm run compile && electron-forge publish",
+    "publish": "npm run compile && electron-forge publish -- --dry-run",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],

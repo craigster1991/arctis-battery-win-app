@@ -18,9 +18,9 @@ const getUnmatchedDevices = (overrideMatches = null) => {
     for (const attDevice of attachedDevices) {
       try {
         if (stringMatches === "_ALL_") {
-          if (attDevice?.usage !== 1) {
+          // if (attDevice?.usage !== 1) {
             devices.push({ attDevice })
-          }
+          // }
         }
         else if (stringMatches?.some(s => attDevice?.product?.toLowerCase().includes(s) || attDevice?.manufacturer?.toLowerCase().includes(s))) {
           if (attDevice?.usage !== 1) {

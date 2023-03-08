@@ -1,0 +1,107 @@
+@import "./table.scss";
+
+* {
+  padding: 0; margin: 0; border: 0; outline: none; box-sizing: border-box;
+}
+
+body {
+  background: #464646;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+.wrapper {
+  padding: 24px;
+  background: #2b2b2b;
+  width: 100vw;
+  height: calc(100vh - 160px);
+}
+
+.cta-container {
+  height: 120px;
+  width: 100vw;
+  background: #464646;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    appearance: none;
+    width: auto;
+    padding: 16px;
+    height: 80px;
+    font-size: 16px;
+    color: black;
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background: #ccc;
+    }
+  }
+}
+
+#about {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  color: white;
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  width: 95vw;
+  height: 95vh;
+  top: 2.5vh;
+  left: 2.5vw;
+  background: #363636;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 0 10px 5px #000000;
+  &.show {
+    display: block;
+  }
+  .content {
+    p, a, h3 {
+      color: white;
+    }
+    p {
+      font-size: 11px;
+    }
+    hr {
+      display: block;
+      height: 1px;
+      border: 0;
+      border-top: 1px solid white;
+    }
+  }
+  &#about-popup {
+    .content {
+      p, h3, hr {
+        margin-bottom: 16px;
+      }
+      p, a {
+        font-size: 16px;
+      }
+      a {
+        text-decoration: underline;
+        &:hover {
+          color: rgb(58, 180, 255);
+        }
+      }
+    }
+  }
+  .close {
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+  }
+}

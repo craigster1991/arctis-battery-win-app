@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SteelSeries devices battery</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="./scripts/jquery-3.6.3.slim.min.js"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Device name</th>
+          <th>Device status</th>
+          <th>Battery level</th>
+          <th>Showing in tray?</th>
+        </tr>
+      </thead>
+      <tbody id="devices">
+      </tbody>
+    </table>
+  </div>
+  <div id="new-device" class="cta-container">
+    <button>Don't see your device?</button>
+  </div>
+  <p id="about">About</p>
+
+  <div class="popup" id="device-popup">
+    <div class="close">X</div>
+    <div class="content">
+      <h3>You should see all Steel Series devices here</h3>
+      <p>If the device is here but not on the main screen, please send the name, vendor id and product id to me and I'll try support it!</p>
+      <p>Also send me the model name and year of your product!</p>
+      <br>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Device name</th>
+          <th>VendorId</th>
+          <th>ProductId</th>
+        </tr>
+      </thead>
+      <tbody id="new-devices">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="popup" id="about-popup">
+    <div class="close">X</div>
+    <div class="content">
+      <h3>What does this app do?</h3>
+      <p>This application is designed to show you the current battery level of your SteelSeries devices. It currently only supports one device at a time. (for now!)</p>
+      <p>The battery level will show in the Windows taskbar as a number.</p>
+      <hr>
+      <p>MIT License - Copyright (c) 2023 Craig Wheatley</p>
+      <p>
+        This is inspired by the amazing work by atagulalan. His work can be found here: https://github.com/atagulalan/arctis-battery-percentage
+      </p>
+      <hr>
+      <a href="https://www.paypal.com/donate/?hosted_button_id=BXZJELREB8DGS" target="_blank">Buy me a coffee :)</a>
+    </div>
+  </div>
+
+  <script src="./scripts/script.js"></script>
+</body>
+</html>

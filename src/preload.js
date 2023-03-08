@@ -3,15 +3,15 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld(
   "api", {
     send: (channel, data) => {
-      let validChannels = ["get-battery"];
+      const validChannels = ["get-battery", "get-devices"];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
       }
     },
-    receive: (channel, func) => {
-      let validChannels = ["send-battery"];
+    receive: (channel, cb) => {
+      const validChannels = ["send-battery", "get-devices"];
       if (validChannels.includes(channel)) {
-        ipcRenderer.on(channel, (event, ...args) => func(...args));
+        ipcRenderer.on(channel, (event, ...args) => cb(...args));
       }
     }
   }

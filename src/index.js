@@ -53,7 +53,7 @@ app.on('activate', () => {
 ipcMain.on("get-devices", () => {
   console.log("get-devices!")
   try {
-    const rawDevices = getUnmatchedDevices()
+    const rawDevices = getUnmatchedDevices("_ALL_")
     let temp = {}
     const cleanDevices = rawDevices
     .map(d => {
@@ -61,13 +61,7 @@ ipcMain.on("get-devices", () => {
       return { vendorId, productId, product }
     })
     .sort((a, b) => a.productId - b.productId)
-    .filter((device => {
-      if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
-        return false
-      }
-      temp = device
-      return true
-    }))
+    .filter((device => !(device?.vendorId === 0 || device?.productId === 0)))
     win.webContents.send("get-devices", JSON.stringify({ error: null, cleanDevices }))
   }
   catch (e) {

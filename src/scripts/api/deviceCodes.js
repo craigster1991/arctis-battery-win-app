@@ -24,6 +24,11 @@ const deviceCodes = [
     vendorId: 4152,
     productId: 4690,
   },
+		{
+    name: "SteelSeries Arctis Nova Pro Wireless",
+    vendorId: 4152,
+    productId: 4832,
+  },
 ]
 
 const getDeviceCodes = () => deviceCodes

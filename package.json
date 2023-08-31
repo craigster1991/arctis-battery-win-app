@@ -1,12 +1,12 @@
 {
   "name": "steel-series-battery",
   "productName": "steel-series-battery",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Shows SteelSeries Arctis wireless device's battery percentages as a tray icon.",
   "main": "src/index.js",
   "scripts": {
     "start": "npm run compile && electron-forge start",
-    "compile": "node-sass src/styles/styles.scss > src/styles.css",
+    "compile": "sass src/styles/styles.scss > src/styles.css",
     "package": "npm run compile && electron-forge package",
     "make": "npm run compile && electron-forge make",
     "publish": "npm run compile && electron-forge publish -- --dry-run",
@@ -20,7 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "node-hid": "^2.1.2"
+    "node-hid": "^2.1.2",
+    "sass": "^1.66.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.5",

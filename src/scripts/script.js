@@ -23,6 +23,10 @@ const processData = (data, tableId) => {
         <td>${deviceData?.product}</td>
         <td>${deviceData?.vendorId}</td>
         <td>${deviceData?.productId}</td>
+        <td>${deviceData?.usage}</td>
+        <td>${deviceData?.usagePage}</td>
+        <td>${deviceData?.interface}</td>
+        <td>${deviceData?.manufacturer}</td>
       </tr>
     `)
       $(`#${tableId}`).append(html)
@@ -38,11 +42,17 @@ const showNewDevices = devices => {
   toggleDevicePopup()
 }
 
+const donate = () => {
+  console.log('donate')
+  window.api.send("donate")
+}
+
 $(document).ready(() => {
 
   $("#device-popup .close").on("click", toggleDevicePopup)
   $("#about-popup .close").on("click", toggleAboutPopup)
   $("#about").on("click", toggleAboutPopup)
+  $("#about-popup #donate-link").on("click", donate)
 
   window.api.receive("send-battery", data => {
     const {error, devicesData} = JSON.parse(data)

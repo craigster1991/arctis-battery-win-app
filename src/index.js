@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, Tray, ipcMain, shell } = require('electron');
 const path = require('path');
 const { getUnmatchedDevices, getMatchedBatteryLevels } = require('./scripts/api/device');
 
@@ -21,7 +21,7 @@ const createTray = () => {
 
 const createWindow = () => {
   win = new BrowserWindow({
-    width: 1024,
+    width: 1200,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -50,6 +50,11 @@ app.on('activate', () => {
   }
 });
 
+ipcMain.on("donate", () => {
+  console.log('open browser')
+  shell.openExternal("https://www.paypal.com/donate/?hosted_button_id=BXZJELREB8DGS");
+})
+
 ipcMain.on("get-devices", () => {
   console.log("get-devices!")
   try {
@@ -57,17 +62,17 @@ ipcMain.on("get-devices", () => {
     let temp = {}
     const cleanDevices = rawDevices
     .map(d => {
-      const { vendorId, productId, product, ...rest } = d.attDevice
-      return { vendorId, productId, product }
+      const { vendorId, productId, product, usage, usagePage, interface, manufacturer, ...rest } = d.attDevice
+      return { vendorId, productId, product, usage, usagePage, interface, manufacturer }
     })
     .sort((a, b) => a.productId - b.productId)
-    .filter((device => {
-      if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
-        return false
-      }
-      temp = device
-      return true
-    }))
+    // .filter((device => {
+    //   if (device?.vendorId === temp?.vendorId && device?.productId === temp?.productId && device?.product === temp?.product) {
+    //     return false
+    //   }
+    //   temp = device
+    //   return true
+    // }))
     win.webContents.send("get-devices", JSON.stringify({ error: null, cleanDevices }))
   }
   catch (e) {

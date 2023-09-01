@@ -87,8 +87,9 @@ body {
       p, a {
         font-size: 16px;
       }
-      a {
+      #donate-link {
         text-decoration: underline;
+        cursor: pointer;
         &:hover {
           color: rgb(58, 180, 255);
         }

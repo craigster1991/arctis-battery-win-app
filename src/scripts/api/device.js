@@ -23,9 +23,9 @@ const getUnmatchedDevices = (overrideMatches = null) => {
           // }
         }
         else if (stringMatches?.some(s => attDevice?.product?.toLowerCase().includes(s) || attDevice?.manufacturer?.toLowerCase().includes(s))) {
-          if (attDevice?.usage !== 1) {
+          // if (attDevice?.usage !== 1) {
             devices.push({ attDevice })
-          }
+          // }
         }
       }
       catch(e) {

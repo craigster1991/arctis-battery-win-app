@@ -1,7 +1,7 @@
 {
   "name": "steel-series-battery",
   "productName": "steel-series-battery",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Shows SteelSeries Arctis wireless device's battery percentages as a tray icon.",
   "main": "src/index.js",
   "scripts": {
@@ -20,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.1.0",
     "node-hid": "^2.1.2",
     "sass": "^1.66.1"
   },

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, Menu, Tray, ipcMain, shell } = require('electron');
 const path = require('path');
 const { getUnmatchedDevices, getMatchedBatteryLevels } = require('./scripts/api/device');
+const Store = require('electron-store')
 
 // for creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -12,6 +13,7 @@ let tray,win // global for accessing in events
 const createTray = () => {
   const contextMenu = Menu.buildFromTemplate([
     { label: "Show App", click: () => win.show() },
+    { label: "Hide App", click: () => win.hide()},
     { label: "Quit", click: () => { app.quit() }},
   ])
   tray = new Tray(path.join(__dirname, "icons", "disconnect.png"))
@@ -26,9 +28,17 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
+    show: false
   });
 
-  win.loadFile(path.join(__dirname, 'index.html'));
+  const store = new Store();
+
+  if (store.get("window-hidden-value") == false) {
+    win.show();
+  }
+
+  win.loadFile(path.join(__dirname, 'index.html'))
+    .then(() => { win.webContents.send("get-window-default", store.get("window-hidden-value")); });
 
   // win.webContents.openDevTools();
 };
@@ -106,4 +116,9 @@ ipcMain.on("get-battery", () => {
     win.webContents.send("send-battery", JSON.stringify({ error: {e,deviceError}, devicesData }))
   }
   
+})
+
+ipcMain.on("set-window-default", (e, bool) => {
+  const store = new Store();
+  store.set("window-hidden-value", bool);
 })

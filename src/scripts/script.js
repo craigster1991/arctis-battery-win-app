@@ -64,6 +64,9 @@ $(document).ready(() => {
     if (error) return alert('error getting list of devices: '+JSON.stringify(error))
     showNewDevices(cleanDevices)
   })
+  window.api.receive("get-window-default", (d) => {
+    $('#hide-by-default-checkbox').prop('checked', d);
+  })
 
   setInterval(() => {
     window.api.send("get-battery")
@@ -72,5 +75,9 @@ $(document).ready(() => {
 
   $("#new-device").on("click", e => {
     window.api.send("get-devices")
+  })
+
+  $('#hide-by-default-checkbox').on("click", e => {
+    window.api.send("set-window-default", $('#hide-by-default-checkbox').prop('checked'))
   })
 })
